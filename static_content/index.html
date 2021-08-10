@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta HTTP-EQUIV="EXPIRES" CONTENT="-1">
+		<script src="jquery-3.5.1.min.js"></script>
+		<script language="javascript" src="model.js" > </script>
+		<script language="javascript" src="controller.js" > </script>
+		<link rel="stylesheet" src="css/style.css">
+		
+		<style>
+			#ui_login { display:block; }
+			#ui_play { display:none; }
+			.error {
+				color: red;
+			}
+			h1 {
+				color: white;
+				text-align: center;
+				font-family: 'Courier New', monospace;
+			}
+			header {
+				background-color: #12c9ff;
+				padding: 5px;
+				margin-bottom:10px;
+				text-align: center;
+			}
+			input[type=submit] {
+				display:inline-block;
+				padding:0.35em 1.2em;
+				border:1px solid #12c9ff;
+				margin:3px;
+				border-radius:2px;
+				box-sizing: border-box;
+				text-decoration:none;
+				font-family:'Roboto',sans-serif;
+				font-weight: 500;
+				color:#12c9ff;
+				text-align:center;
+				transition: all 0.2s;
+				background-color:#FFFFFF;
+				font-size: medium;
+			}
+			input[type=submit]:hover{
+				color:#FFFFFF;
+				background-color:#12c9ff;
+				border: 2px solid #e5e5e5;
+			}
+			input[type=text], input[type=password] {
+				padding: 5px;
+				margin: 3px;
+				font-size: medium;
+				border-radius: 2px;
+				border: 1px solid grey;
+			}
+			#form{
+				margin: auto; 
+				padding: 10px; 
+				border: 1px solid #12c9ff; 
+				width: 350px;
+				border-radius: 2px;
+			}
+			#ui_profile, #ui_difficulty, #ui_play {
+				text-align: center;
+			}
+			#difficulty {
+				background-color: white;
+				color: #12c9ff;
+				font-size: medium;
+				padding: 5px;
+				width: 100px;
+			}
+			#difficulty select {
+  				display: none; /*hide original SELECT element: */
+			}
+			.select-items {
+				padding: 5px;
+			}
+			#profileDelete {
+				border: 1px solid red;
+				color: red;
+			}
+			#profileDelete:hover {
+				border: 1px solid #e5e5e5;
+				background-color: red;
+				color: white;
+			}
+			#leaderboard {
+				text-align: center;
+				border: 1px solid #12c9ff;
+				margin: auto;
+			}
+			th, td {
+				padding: 5px;
+				font-family: Arial, Helvetica, sans-serif;
+			}
+		</style>
+		<title>Fortnite</title>
+	</head>
+
+	<header>
+		<h1>FORTNITE</h1>
+		<nav>
+			<input type="submit" id="playSubmit" value="Play">
+			<input type="submit" id="leaderboardSubmit" value="Leaderboard">
+			<input type="submit" id="instructionsSubmit" value="Instructions">
+			<input type="submit" id="profileSubmit" value="Profile">
+			<input type="submit" id="logoutSubmit" value="Logout">
+		</nav>
+	</header>
+
+	<body bgcolor="ffffff">
+		<div id="ui_login" style="text-align: center;">
+			<div>
+				<input type="text" id="username" placeholder="User Name" />
+				<input type="password" id="password" placeholder="Password" />
+				<input type="submit" id="loginSubmit" value="Login"></br>
+				<p id="loginError" class="error"></p>
+				</br><input type="submit" id="loginRegister" value="Register">
+			</div>
+		</div>
+		
+		<div id="ui_instructions">
+			<div>
+				Instructions:
+				<ul>
+					<li>Move player with w(up) a(left) s(down) d(right)</li>
+					<li>Left click to shoot</li>
+					<li>Press or hold E while moving into a box to pick up ammo</li>
+					<li>Pick up health packs by walking over them and use them by pressing G</li>
+					<li>Switch weapons with Q</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="ui_play">
+			<center>
+				<canvas id="stage" width="800" height="800" style="border:1px solid black;"> </canvas>
+			</center>
+			</br><input type="submit" id="playRestart" value="Restart">
+		</div>
+
+		<div id="ui_leaderboard">
+			<table id="leaderboard"></table>
+		</div>
+
+		<div id="ui_profile">
+			<p id="usernameProfileError" class="error"></p>
+			<label for="newusernameProfile">Username:</label><br>
+			<input type="text" id="newusernameProfile" name="newusername" required><br>
+			
+			<p id="passwordProfileError" class="error"></p>
+			<label for="pwd">Password:</label><br>
+			<input type="password" id="pwdProfile" name="pwd" minlength="8"><br>
+			<label for="pwd">Re-enter Password:</label><br>
+			<input type="password" id="pwd2Profile" name="pwd2" minlength="8"><br>
+
+			<p id="skillProfileError" class="error"></p>
+			Skill Level: 
+			<input type="radio" id="beginnerProfile" name="skill" value="Beginner">
+			<label for="beginner">Beginner</label>
+			<input type="radio" id="intermediateProfile" name="skill" value="Intermediate">
+			<label for="intermediate">Intermediate</label>
+			<input type="radio" id="proProfile" name="skill" value="Pro">
+			<label for="pro">Pro</label><br>
+
+			<p id="birthdayProfileError" class="error"></p>
+			<label for="birthday">Birthday:</label>
+			<input type="date" id="birthdayProfile" name="birthday" ></br>
+
+			<br><input type="submit" id="update" value="Update">
+			<p id="profileSuccess"></p>
+
+			</br><input type="submit" id="profileDelete" title="All information will be lost" value="Delete Account">
+		</div>
+		
+		<div id="ui_difficulty">
+			<p id="difficultyError" class="error"></p></br>
+			<label for="difficulty">Choose a difficulty:</label>
+			<select id="difficulty" name="difficulty">
+				<option value="easy">Easy</option>
+				<option value="medium">Medium</option>
+				<option value="hard">Hard</option>
+			</select></br>
+			</br><input type="submit" id="difficultySubmit" value="Submit">
+		</div>
+
+		<div id="ui_register">
+			<div id="form">
+
+					<input type="submit" id="registerBack" value="Back to Login"></br>
+				
+					<p id="usernameError" class="error"></p>
+					<label for="newusername">Username:</label><br>
+					<input type="text" id="newusername" name="newusername" required><br>
+					
+					<p id="passwordError" class="error"></p>
+					<label for="pwd">Password:</label><br>
+					<input type="password" id="pwd" name="pwd" minlength="8" required><br>
+					<label for="pwd">Re-enter Password:</label><br>
+					<input type="password" id="pwd2" name="pwd2" minlength="8" required><br>
+
+					<p id="skillError" class="error"></p>
+					Skill Level: 
+					<input type="radio" id="beginner" name="skill" value="Beginner">
+					<label for="beginner">Beginner</label>
+					<input type="radio" id="intermediate" name="skill" value="Intermediate">
+					<label for="intermediate">Intermediate</label>
+					<input type="radio" id="pro" name="skill" value="Pro">
+					<label for="pro">Pro</label><br>
+
+					<p id="birthdayError" class="error"></p>
+					<label for="birthday">Birthday:</label>
+					<input type="date" id="birthday" name="birthday" ></br>
+
+					</br><input type="submit" id="registerSubmit" value="Register">
+				
+			</div>
+		</div>
+	</body>
+</html>
