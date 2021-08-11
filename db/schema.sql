@@ -1,6 +1,6 @@
 --- load with 
---- psql "dbname='webdb' user='webdbuser' password='password' host='localhost'" -f schema.sql
-DROP TABLE ftduser;
+--- psql "dbname='webdb' user='webdbuser' password='password' host='postgres'" -f schema.sql
+-- DROP TABLE ftduser;
 CREATE TABLE ftduser (
 	username VARCHAR(20) PRIMARY KEY,
 	password BYTEA NOT NULL,

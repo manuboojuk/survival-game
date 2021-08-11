@@ -16,4 +16,4 @@ npm install pg
 # check out the package.json now
 # check out node_modules
 
-psql "dbname='webdb' user='webdbuser' password='password' host='localhost'" -f db/schema.sql
+psql "dbname='webdb' user='webdbuser' password='password' host='postgres'" -f db/schema.sql
